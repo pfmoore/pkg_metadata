@@ -1,0 +1,20 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "pkg_metadata"
+authors = [{name = "Paul Moore", email = "p.f.moore@gmail.com"}]
+license = {file = "LICENSE"}
+description = "Utility classes for handling packaging metadata"
+readme = "README.md"
+classifiers = ["License :: OSI Approved :: MIT License"]
+dynamic = ["version"]
+requires-python = ">= 3.7"
+dependencies = [
+    "packaging",
+    "attrs",
+]
+
+[project.urls]
+Home = "https://github.com/pfmoore/pkg_metadata"
