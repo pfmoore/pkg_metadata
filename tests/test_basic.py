@@ -1,4 +1,4 @@
-from pkg_metadata import json_to_msg, msg_to_json, pyproject_to_json
+from pkg_metadata import json_to_bytes, bytes_to_json, msg_to_json, pyproject_to_json
 from email import message_from_bytes, message_from_string
 
 import pytest
@@ -14,15 +14,15 @@ sample = {
 
 
 def test_roundtrip():
-    m = json_to_msg(sample)
-    j = msg_to_json(message_from_string(m))
+    m = json_to_bytes(sample)
+    j = bytes_to_json(m)
     assert j == sample
 
 
 def test_binary_utf8_msg():
     txt_msg = ["Name: test", "Version: 0.1", "Description: Un éxample, garçon!"]
     bin_msg = "\n".join(txt_msg).encode("utf-8")
-    j = msg_to_json(message_from_bytes(bin_msg))
+    j = bytes_to_json(bin_msg)
     assert j["name"] == "test"
     assert j["version"] == "0.1"
     assert j["description"] == "Un éxample, garçon!"
@@ -31,7 +31,7 @@ def test_binary_utf8_msg():
 def test_binary_latin1_msg():
     txt_msg = ["Name: test", "Version: 0.1", "Description: Un éxample, garçon!"]
     bin_msg = "\n".join(txt_msg).encode("latin1")
-    j = msg_to_json(message_from_bytes(bin_msg))
+    j = bytes_to_json(bin_msg)
     assert j["name"] == "test"
     assert j["version"] == "0.1"
     assert j["description"] == "Un éxample, garçon!"

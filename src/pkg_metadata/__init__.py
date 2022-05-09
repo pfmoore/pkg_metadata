@@ -3,4 +3,4 @@
 
 __version__ = "0.1"
 
-from .metadata import msg_to_json, json_to_msg, pyproject_to_json
+from .metadata import bytes_to_json, msg_to_json, json_to_bytes, pyproject_to_json
