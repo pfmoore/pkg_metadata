@@ -2,7 +2,7 @@ from email import message_from_bytes
 from email.message import Message
 from email.header import Header, make_header, decode_header
 from pathlib import Path
-from typing import Any, Union
+from typing import Any, Dict, Union
 
 from packaging.markers import Marker
 from packaging.requirements import Requirement
@@ -48,7 +48,7 @@ def json_name(field: str) -> str:
     return field.lower().replace("-", "_")
 
 
-def bytes_to_json(meta: bytes) -> dict[str, Any]:
+def bytes_to_json(meta: bytes) -> Dict[str, Any]:
     """Convert header format into a JSON compatible dictionary.
 
     The input should be a byte string in the standard "email header" format.
@@ -61,7 +61,7 @@ def bytes_to_json(meta: bytes) -> dict[str, Any]:
     return msg_to_json(msg)
 
 
-def msg_to_json(msg: Message) -> dict[str, Any]:
+def msg_to_json(msg: Message) -> Dict[str, Any]:
     """Convert a Message object into a JSON-compatible dictionary.
     """
     def sanitise_header(h) -> str:
@@ -120,7 +120,7 @@ def rfc822_escape(header: str) -> str:
     return sep.join(lines)
 
 
-def json_to_bytes(metadata: dict[str, Any]) -> str:
+def json_to_bytes(metadata: Dict[str, Any]) -> str:
     """Convert a JSON-compatible dictionary to header format.
     """
     # Build the output by hand, as the email module adds
@@ -152,7 +152,7 @@ def json_to_bytes(metadata: dict[str, Any]) -> str:
     return msg.encode("UTF-8")
 
 
-def pyproject_to_json(pyproject: dict[str, Any]) -> dict[str, Any]:
+def pyproject_to_json(pyproject: Dict[str, Any]) -> Dict[str, Any]:
     """Read metadata from the [project] section of pyproject.toml.
 
     The input should be a dictionary in the format specified for the [project]
@@ -160,7 +160,7 @@ def pyproject_to_json(pyproject: dict[str, Any]) -> dict[str, Any]:
     compatible dictionary format, following the rules in PEP 621.
     """
 
-    json_data: dict[str, Any] = {}
+    json_data: Dict[str, Any] = {}
     json_data["metadata_version"] = None
 
     def copy_to(pyproject_name, json_name=None):
