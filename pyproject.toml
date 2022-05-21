@@ -10,7 +10,6 @@ description = "Utility classes for handling packaging metadata"
 readme = "README.md"
 classifiers = ["License :: OSI Approved :: MIT License"]
 dynamic = ["version"]
-requires-python = ">= 3.7"
 dependencies = [
 ]
 
