@@ -1,7 +1,8 @@
-from pkg_metadata import json_to_bytes, bytes_to_json, msg_to_json, pyproject_to_json
-from email import message_from_bytes, message_from_string
+from email import message_from_string
 
 import pytest
+
+from pkg_metadata import bytes_to_json, json_to_bytes, msg_to_json, pyproject_to_json
 
 sample = {
     "metadata_version": "2.2",

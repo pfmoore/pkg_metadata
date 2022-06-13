@@ -70,4 +70,3 @@ with open("pyproject.toml", "rb") as f:
 
 metadata = pkg_metadata.pyproject_to_json(pyproject_data["project"])
 ```
-

@@ -1,18 +1,25 @@
-import sqlite3, zlib, pkg_metadata
+import sqlite3
+import zlib
 from email import message_from_bytes, message_from_string
+
+import pkg_metadata
+
 
 def match(d1, d2):
     """Match ignoring whitespace differences in values"""
     assert d1.keys() == d2.keys(), f"{sorted(d1.keys())} vs {sorted(d2.keys())}"
     for k in d1:
         if isinstance(d1[k], list):
-            v1 = [v.replace("\n","").replace(" ","") for v in d1[k]]
-            v2 = [v.replace("\n","").replace(" ","") for v in d2[k]]
+            v1 = [v.replace("\n", "").replace(" ", "") for v in d1[k]]
+            v2 = [v.replace("\n", "").replace(" ", "") for v in d2[k]]
             assert v1 == v2, f"{k}: {d1[k]} vs {d2[k]}"
         else:
-            assert d1[k].replace("\n", "").replace(" ", "") == d2[k].replace("\n", "").replace(" ", ""),  f"{k}: {d1[k]} vs {d2[k]}"
+            assert d1[k].replace("\n", "").replace(" ", "") == d2[k].replace(
+                "\n", ""
+            ).replace(" ", ""), f"{k}: {d1[k]} vs {d2[k]}"
 
-conn = sqlite3.connect(r"..\pypidata\Metadata.db")                      
+
+conn = sqlite3.connect(r"..\pypidata\Metadata.db")
 for file, meta in conn.execute("select filename, metadata from project_metadata"):
     meta = zlib.decompress(meta)
     msg = message_from_bytes(meta)

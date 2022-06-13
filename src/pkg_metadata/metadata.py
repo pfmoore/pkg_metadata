@@ -1,6 +1,6 @@
 from email import message_from_bytes
+from email.header import Header, decode_header, make_header
 from email.message import Message
-from email.header import Header, make_header, decode_header
 from pathlib import Path
 from typing import Any, Dict, Union
 
@@ -62,8 +62,8 @@ def bytes_to_json(meta: bytes) -> Dict[str, Any]:
 
 
 def msg_to_json(msg: Message) -> Dict[str, Any]:
-    """Convert a Message object into a JSON-compatible dictionary.
-    """
+    """Convert a Message object into a JSON-compatible dictionary."""
+
     def sanitise_header(h) -> str:
         if isinstance(h, Header):
             chunks = []
@@ -121,8 +121,7 @@ def rfc822_escape(header: str) -> str:
 
 
 def json_to_bytes(metadata: Dict[str, Any]) -> str:
-    """Convert a JSON-compatible dictionary to header format.
-    """
+    """Convert a JSON-compatible dictionary to header format."""
     # Build the output by hand, as the email module adds
     # extra headers, relevant to email, which don't conform
     # to the metadata spec.
