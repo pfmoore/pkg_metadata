@@ -11,6 +11,7 @@ readme = "README.md"
 classifiers = ["License :: OSI Approved :: MIT License"]
 dynamic = ["version"]
 dependencies = [
+    "packaging",
 ]
 
 [project.urls]
