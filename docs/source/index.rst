@@ -18,7 +18,7 @@ Basic Usage
 
 .. code-block:: python
 
-    metadata = bytes_to_json(Path("METADATA").read_bytes())
+    metadata = bytes_to_dict(Path("METADATA").read_bytes())
     print(metadata["name"], metadata["version"])
 
 Contents

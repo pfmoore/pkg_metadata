@@ -2,7 +2,7 @@ from email import message_from_string
 
 import pytest
 
-from pkg_metadata import bytes_to_json, json_to_bytes, msg_to_json, pyproject_to_json
+from pkg_metadata import bytes_to_dict, dict_to_bytes, msg_to_dict, pyproject_to_dict
 
 sample = {
     "metadata_version": "2.2",
@@ -15,15 +15,15 @@ sample = {
 
 
 def test_roundtrip():
-    m = json_to_bytes(sample)
-    j = bytes_to_json(m)
+    m = dict_to_bytes(sample)
+    j = bytes_to_dict(m)
     assert j == sample
 
 
 def test_binary_utf8_msg():
     txt_msg = ["Name: test", "Version: 0.1", "Description: Un éxample, garçon!"]
     bin_msg = "\n".join(txt_msg).encode("utf-8")
-    j = bytes_to_json(bin_msg)
+    j = bytes_to_dict(bin_msg)
     assert j["name"] == "test"
     assert j["version"] == "0.1"
     assert j["description"] == "Un éxample, garçon!"
@@ -32,7 +32,7 @@ def test_binary_utf8_msg():
 def test_binary_latin1_msg():
     txt_msg = ["Name: test", "Version: 0.1", "Description: Un éxample, garçon!"]
     bin_msg = "\n".join(txt_msg).encode("latin1")
-    j = bytes_to_json(bin_msg)
+    j = bytes_to_dict(bin_msg)
     assert j["name"] == "test"
     assert j["version"] == "0.1"
     assert j["description"] == "Un éxample, garçon!"
@@ -40,7 +40,7 @@ def test_binary_latin1_msg():
 
 def test_keywords():
     msg = ["Name: test", "Version: 0.1", "Keywords: one two three"]
-    j = msg_to_json(message_from_string("\n".join(msg)))
+    j = msg_to_dict(message_from_string("\n".join(msg)))
     assert j["name"] == "test"
     assert j["version"] == "0.1"
     assert j["keywords"] == ["one", "two", "three"]
@@ -70,7 +70,7 @@ def test_pyproject():
             ],
         },
     }
-    j = pyproject_to_json(pyproject)
+    j = pyproject_to_dict(pyproject)
     assert j["name"] == "test"
     assert j["version"] == "0.1"
     assert j["description"] == "Example readme"
@@ -101,7 +101,7 @@ def test_pyproject_optional_deps_only():
             ],
         },
     }
-    j = pyproject_to_json(pyproject)
+    j = pyproject_to_dict(pyproject)
     assert j["name"] == "test"
     assert j["version"] == "0.1"
     assert j["provides_extra"] == ["test"]
@@ -120,7 +120,7 @@ def test_pyproject_optional_deps_only():
 )
 def test_pyproject_readme_file(name, content_type, tmp_path):
     (tmp_path / name).write_text("Example")
-    j = pyproject_to_json(
+    j = pyproject_to_dict(
         {"name": "foo", "version": "1.0", "readme": str(tmp_path / name)}
     )
     assert j["description"] == "Example"
@@ -137,7 +137,7 @@ def test_pyproject_readme_file(name, content_type, tmp_path):
 )
 def test_pyproject_readme_explicit_file(name, content_type, tmp_path):
     (tmp_path / name).write_text("Example")
-    j = pyproject_to_json(
+    j = pyproject_to_dict(
         {
             "name": "foo",
             "version": "1.0",
@@ -151,7 +151,7 @@ def test_pyproject_readme_explicit_file(name, content_type, tmp_path):
 @pytest.mark.parametrize("encoding", ["utf-8", "latin1"])
 def test_pyproject_readme_encoding(encoding, tmp_path):
     (tmp_path / "README").write_text("Éxample", encoding=encoding)
-    j = pyproject_to_json(
+    j = pyproject_to_dict(
         {
             "name": "foo",
             "version": "1.0",
@@ -168,7 +168,7 @@ def test_pyproject_readme_encoding(encoding, tmp_path):
 def test_pytest_readme_no_type(tmp_path):
     (tmp_path / "README.md").write_text("Example")
     with pytest.raises(ValueError) as exc:
-        pyproject_to_json(
+        pyproject_to_dict(
             {
                 "name": "foo",
                 "version": "1.0",
@@ -181,7 +181,7 @@ def test_pytest_readme_no_type(tmp_path):
 def test_pytest_readme_text_and_file(tmp_path):
     (tmp_path / "README.md").write_text("Example")
     with pytest.raises(ValueError) as exc:
-        pyproject_to_json(
+        pyproject_to_dict(
             {
                 "name": "foo",
                 "version": "1.0",

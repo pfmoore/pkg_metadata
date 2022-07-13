@@ -1,6 +1,6 @@
 import sqlite3
 import zlib
-from email import message_from_bytes, message_from_string
+from email import message_from_bytes
 
 import pkg_metadata
 
@@ -24,9 +24,9 @@ for file, meta in conn.execute("select filename, metadata from project_metadata"
     meta = zlib.decompress(meta)
     msg = message_from_bytes(meta)
     try:
-        j = pkg_metadata.msg_to_json(msg)
-        m = pkg_metadata.json_to_msg(j)
-        j2 = pkg_metadata.msg_to_json(message_from_string(m))
+        j = pkg_metadata.msg_to_dict(msg)
+        m = pkg_metadata.dict_to_bytes(j)
+        j2 = pkg_metadata.msg_to_dict(message_from_bytes(m))
         if j.get("description", "xxx") == "" and "description" not in j2:
             j2["description"] = ""
         match(j, j2)

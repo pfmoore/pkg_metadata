@@ -3,6 +3,6 @@
 
 __version__ = "0.3"
 
-from .metadata import bytes_to_json, json_to_bytes, msg_to_json, pyproject_to_json
+from .metadata import bytes_to_dict, dict_to_bytes, msg_to_dict, pyproject_to_dict
 
-__all__ = ["bytes_to_json", "msg_to_json", "json_to_bytes", "pyproject_to_json"]
+__all__ = ["bytes_to_dict", "msg_to_dict", "dict_to_bytes", "pyproject_to_dict"]

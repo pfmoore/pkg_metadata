@@ -8,10 +8,10 @@ from packaging.markers import Marker
 from packaging.requirements import Requirement
 
 __all__ = [
-    "bytes_to_json",
-    "msg_to_json",
-    "json_to_bytes",
-    "pyproject_to_json",
+    "bytes_to_dict",
+    "msg_to_dict",
+    "dict_to_bytes",
+    "pyproject_to_dict",
 ]
 
 METADATA_FIELDS = [
@@ -48,7 +48,7 @@ def json_name(field: str) -> str:
     return field.lower().replace("-", "_")
 
 
-def bytes_to_json(meta: bytes) -> Dict[str, Any]:
+def bytes_to_dict(meta: bytes) -> Dict[str, Any]:
     """Convert header format into a JSON compatible dictionary.
 
     The input should be a byte string in the standard "email header" format.
@@ -58,10 +58,10 @@ def bytes_to_json(meta: bytes) -> Dict[str, Any]:
     other than UTF-8 or Latin1.
     """
     msg = message_from_bytes(meta)
-    return msg_to_json(msg)
+    return msg_to_dict(msg)
 
 
-def msg_to_json(msg: Message) -> Dict[str, Any]:
+def msg_to_dict(msg: Message) -> Dict[str, Any]:
     """Convert a Message object into a JSON-compatible dictionary."""
 
     def sanitise_header(h) -> str:
@@ -120,7 +120,7 @@ def rfc822_escape(header: str) -> str:
     return sep.join(lines)
 
 
-def json_to_bytes(metadata: Dict[str, Any]) -> str:
+def dict_to_bytes(metadata: Dict[str, Any]) -> bytes:
     """Convert a JSON-compatible dictionary to header format."""
     # Build the output by hand, as the email module adds
     # extra headers, relevant to email, which don't conform
@@ -151,7 +151,7 @@ def json_to_bytes(metadata: Dict[str, Any]) -> str:
     return msg.encode("UTF-8")
 
 
-def pyproject_to_json(pyproject: Dict[str, Any]) -> Dict[str, Any]:
+def pyproject_to_dict(pyproject: Dict[str, Any]) -> Dict[str, Any]:
     """Read metadata from the [project] section of pyproject.toml.
 
     The input should be a dictionary in the format specified for the [project]

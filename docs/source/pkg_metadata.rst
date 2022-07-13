@@ -11,7 +11,7 @@ Usage
 
 .. doctest::
 
-    >>> from pkg_metadata import bytes_to_json
+    >>> from pkg_metadata import bytes_to_dict
     >>> metadata_bytes = b"""\
     ... Metadata-Version: 2.1
     ... Name: pkg_metadata
@@ -24,7 +24,7 @@ Usage
     ...
     ... Some description
     ... """
-    >>> metadata = bytes_to_json(metadata_bytes)
+    >>> metadata = bytes_to_dict(metadata_bytes)
     >>> metadata["name"]
     'pkg_metadata'
     >>> metadata["description"]
